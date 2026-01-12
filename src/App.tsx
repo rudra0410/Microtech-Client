@@ -10,7 +10,7 @@ import Login from "./pages/Login";
 import Users from "./pages/Users";
 import UserDetail from "./pages/UserDetail";
 import Subscriptions from "./pages/Subscriptions";
-import Notifications from "./pages/Notifications";
+// import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
 import AppLayout from "./components/layout/AppLayout";
 import Dashboard from "./pages/Dashboard";
@@ -89,14 +89,14 @@ function App() {
                 />
 
                 {/* Notifications - All authenticated users */}
-                <Route
+                {/* <Route
                   path="notifications"
                   element={
                     <ProtectedRoute>
                       <Notifications />
                     </ProtectedRoute>
                   }
-                />
+                /> */}
 
                 {/* Settings - All authenticated users */}
                 <Route
