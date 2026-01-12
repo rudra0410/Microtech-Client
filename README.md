@@ -1,133 +1,73 @@
-# IoT Device Controller Backend Service
+# React + TypeScript + Vite
 
-A production-ready, minimal backend service for IoT device management built with Node.js and Express.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Features
+Currently, two official plugins are available:
 
-- 🔐 Firebase Authentication (Phone OTP)
-- 🗄️ Supabase Database Integration
-- 🛡️ Security Middleware (Helmet, CORS, Rate Limiting)
-- 📝 Structured Logging (Winston)
-- ✅ Input Validation Ready
-- 🏗️ Clean Architecture with Separation of Concerns
-- 🚀 Production Ready with Graceful Shutdown
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Project Structure
+## React Compiler
 
-```
-src/
-├── configs/          # External services & app configs
-├── routes/           # Route definitions only
-├── controllers/      # Request/Response handlers
-├── services/         # Business logic & database operations
-├── middlewares/      # Express middlewares
-├── utils/            # Helper functions
-├── validations/      # Input validation schemas
-├── constants/        # App constants
-├── jobs/             # Cron jobs
-├── app.js            # Express app configuration
-├── server.js         # Server startup (moved to root)
-└── routes.js         # Route loader
-```
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Prerequisites
+## Expanding the ESLint configuration
 
-- Node.js (v18 or higher)
-- npm or yarn
-- Supabase account and project
-- Firebase project with Admin SDK credentials
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-## Installation
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-3. Create a `.env` file in the root directory:
-   ```env
-   PORT=3000
-   NODE_ENV=development
-   SUPABASE_URL=your_supabase_url
-   SUPABASE_API_KEY=your_supabase_api_key
-   JWT_SECRET=your_jwt_secret
-   CORS_ORIGIN=*
-   ```
-
-4. Add Firebase service account credentials:
-   - Place your Firebase service account JSON file at `firebase/serviceAccount.json`
-
-## Running the Application
-
-### Development
-```bash
-npm run dev
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-### Production
-```bash
-npm start
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-
-The server will start on the port specified in your `.env` file (default: 3000).
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/login` - Login with Firebase token
-
-### Users
-- `GET /api/users/:userId` - Get user details
-
-### Subscriptions
-- `GET /api/subscriptions/status` - Get subscription status
-
-### Devices
-- `GET /api/devices/:deviceId` - Get device details
-
-### Admin
-- `POST /api/admin/create-user` - Create new user (Admin only)
-
-### Health Check
-- `GET /health` - Server health check
-
-## Architecture Principles
-
-- **Separation of Concerns**: Each layer has a single responsibility
-- **No ORM**: Direct Supabase queries in services
-- **Thin Controllers**: Controllers only handle req/res, delegate to services
-- **Business Logic in Services**: All database and business logic in services
-- **Consistent Responses**: Standardized API response format
-- **Error Handling**: Centralized error handling middleware
-
-## Security
-
-- Firebase Admin SDK for authentication
-- Helmet.js for security headers
-- CORS configuration
-- Rate limiting
-- Input validation (ready for implementation)
-- Password hashing with bcrypt
-
-## Logging
-
-Logs are written to:
-- Console (development)
-- `logs/combined.log` (all logs)
-- `logs/error.log` (errors only)
-
-## Environment Variables
-
-| Variable | Description | Required | Default |
-|----------|-------------|----------|---------|
-| `PORT` | Server port | No | 3000 |
-| `NODE_ENV` | Environment | No | development |
-| `SUPABASE_URL` | Supabase project URL | Yes | - |
-| `SUPABASE_API_KEY` | Supabase API key | Yes | - |
-| `JWT_SECRET` | JWT secret key | No | - |
-| `CORS_ORIGIN` | CORS origin | No | * |
-
-## License
-
-ISC
