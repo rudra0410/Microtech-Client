@@ -1,10 +1,9 @@
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
-import { ChevronRight, Bell, Search } from "lucide-react";
+import { ChevronRight, Bell } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { useBreadcrumb } from "../../context/BreadcrumbContext";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import {
   DropdownMenu,
@@ -121,14 +120,14 @@ const Header: React.FC = () => {
       {/* Right: Actions */}
       <div className="flex items-center gap-3">
         {/* Search */}
-        <div className="relative hidden lg:block">
+        {/* <div className="relative hidden lg:block">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <Input
             type="text"
             placeholder="Search..."
             className="pl-9 w-64 h-9 bg-slate-50 border-slate-200 focus:bg-white"
           />
-        </div>
+        </div> */}
 
         {/* Notifications */}
         <DropdownMenu>

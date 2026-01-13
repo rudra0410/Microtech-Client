@@ -91,6 +91,15 @@ class SubscriptionService {
     return response.data;
   }
 
+  async resumeSubscription(userId: string): Promise<Subscription[]> {
+    const response = await apiService.post<{ data: Subscription[] }>(
+      "/api/admin/subscriptions/resumeSubscription",
+      {
+        userId,
+      }
+    );
+    return response.data;
+  }
   async deleteSubscription(subscriptionId: string): Promise<Subscription> {
     const response = await apiService.post<{ data: Subscription }>(
       "/api/admin/subscriptions/deleteSubscription",

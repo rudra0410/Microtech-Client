@@ -12,14 +12,10 @@ export const PageTitleExample: React.FC = () => {
   const [customTitle, setCustomTitle] = useState('');
   const [titleMode, setTitleMode] = useState<'auto' | 'custom' | 'base'>('auto');
 
-  // Conditional hook usage based on mode
-  if (titleMode === 'auto') {
-    usePageTitle();
-  } else if (titleMode === 'custom' && customTitle) {
-    useCustomPageTitle(customTitle);
-  } else if (titleMode === 'base' && customTitle) {
-    usePageTitleWithBase(customTitle);
-  }
+  // Call all hooks unconditionally
+  usePageTitle();
+  useCustomPageTitle(titleMode === 'custom' && customTitle ? customTitle : '');
+  usePageTitleWithBase(titleMode === 'base' && customTitle ? customTitle : '');
 
   return (
     <div className="space-y-6 p-6">

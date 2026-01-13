@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
 import { useUsers, useDashboard, useSubscriptions } from '../../hooks';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';

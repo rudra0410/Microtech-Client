@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { apiClient } from '../lib/api';
 
 export interface ApiResponse<T = any> {
@@ -10,7 +11,7 @@ export const apiService = {
   // Health check
   async healthCheck(): Promise<string> {
     try {
-      const response = await apiClient.get('/');
+      const response = await apiClient.get('/health');
       // Handle both string and object responses from server
       if (typeof response.data === 'string') {
         return response.data;

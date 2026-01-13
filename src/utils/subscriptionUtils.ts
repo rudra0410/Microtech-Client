@@ -18,7 +18,7 @@ export const getSubscriptionStatusInfo = (user: User) => {
   // Direct mapping from backend status (backend sends lowercase values)
   let status: string;
 
-  if (!user.subscriptionStatus || user.subscriptionStatus === 'inactive') {
+  if (!user.subscriptionStatus || user.subscriptionStatus === "inactive") {
     status = "inactive";
   } else if (user.subscriptionStatus === "active") {
     status = "active";
@@ -40,13 +40,15 @@ export const getSubscriptionStatusInfo = (user: User) => {
           addSuffix: true,
         })}`
       : "Subscription expired";
-  } else if (status === "cancelled") {
+  }
+   else if (status === "cancelled") {
     message = user.subscriptionExpiry
       ? `Cancelled ${formatDistanceToNow(new Date(user.subscriptionExpiry), {
           addSuffix: true,
         })}`
       : "Subscription cancelled";
-  } else if (status === "active") {
+  } 
+  else if (status === "active") {
     message = user.subscriptionExpiry
       ? `Expires ${formatDistanceToNow(new Date(user.subscriptionExpiry), {
           addSuffix: true,
@@ -63,6 +65,51 @@ export const getSubscriptionStatusInfo = (user: User) => {
     isExpired: status === "expired",
     isActive: status === "active",
     isCancelled: status === "cancelled",
+  };
+};
+
+export const getSubscriptionStatusInfoAdmin = (user: User) => {
+  const raw = user.subscriptionStatus;
+
+  const status: "active" | "expired" | "cancelled" | "inactive" =
+    raw === "active" || raw === "expired" || raw === "cancelled"
+      ? raw
+      : "inactive";
+
+  const expiry = user.subscriptionExpiry
+    ? new Date(user.subscriptionExpiry)
+    : null;
+
+  let message = "No subscription";
+
+  if (status === "active") {
+    message = expiry
+      ? `Expires ${formatDistanceToNow(expiry, { addSuffix: true })}`
+      : "Active";
+  }
+
+  if (status === "expired") {
+    message = expiry
+      ? `Expired ${formatDistanceToNow(expiry, { addSuffix: true })}`
+      : "Expired";
+  }
+
+  if (status === "cancelled") {
+    message = expiry
+      ? `Cancelled ${formatDistanceToNow(expiry, { addSuffix: true })}`
+      : "Cancelled";
+  }
+
+  return {
+    status,
+    label: status.toUpperCase(), // ACTIVE / EXPIRED / CANCELLED / INACTIVE
+    message,
+
+    // For table filtering & badges
+    isActive: status === "active",
+    isExpired: status === "expired",
+    isCancelled: status === "cancelled",
+    isInactive: status === "inactive",
   };
 };
 

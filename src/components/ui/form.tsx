@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { Controller, FormProvider, useFormContext } from "react-hook-form";
@@ -15,7 +16,7 @@ const FormFieldContext = React.createContext<FormFieldContextValue>({})
 
 const FormField = ({
   ...props
-}: any) => {
+}: React.ComponentProps<typeof Controller>) => {
   return (
     <FormFieldContext.Provider value={{ name: props.name }}>
       <Controller {...props} />

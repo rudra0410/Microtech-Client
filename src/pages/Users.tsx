@@ -45,7 +45,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../components/ui/tooltip";
-import { getSubscriptionStatusInfo } from "../utils/subscriptionUtils";
+import {
+  getSubscriptionMessage,
+  getSubscriptionStatusInfo,
+  getSubscriptionStatusInfoAdmin,
+} from "../utils/subscriptionUtils";
 
 interface ConfirmDialog {
   open: boolean;
@@ -274,14 +278,23 @@ const Users = () => {
       render: (value: unknown, row: User) => {
         console.log(row);
         const subscriptionInfo = getSubscriptionStatusInfo(row);
+        const subscriptionInfoAdmin = getSubscriptionStatusInfoAdmin(row);
         console.log(subscriptionInfo);
+        const subscriptionStatus = getSubscriptionStatusInfo(row);
+        const subscriptionMsg = getSubscriptionMessage(row, "detailed");
 
         return (
           <div>
-            <StatusBadge status={subscriptionInfo.status} />
+            {/* <StatusBadge status={subscriptionInfo.status} /> */}
+            <StatusBadge status={subscriptionInfoAdmin.status} />
+            {/* <StatusBadge status={subscriptionStatus.status} /> */}
             <p className="text-xs text-slate-500 mt-1">
               {subscriptionInfo.message}
             </p>
+            {/* <p className="text-xs text-slate-500 mt-1">
+              {subscriptionInfoAdmin.message}
+            </p> */}
+            {/* <p className="text-xs text-slate-500 mt-1">{subscriptionMsg}</p> */}
           </div>
         );
       },

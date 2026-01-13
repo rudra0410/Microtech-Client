@@ -194,13 +194,16 @@ const Subscriptions = () => {
       header: "Status",
       accessor: "status",
       sortable: true,
-      render: (value: unknown) => <StatusBadge status={String(value).toLowerCase()} />,
+      render: (value: unknown) => (
+        <StatusBadge status={String(value).toLowerCase()} />
+      ),
     },
     {
       header: "Start Date",
       accessor: "start_date",
       sortable: true,
-      render: (value: unknown) => format(new Date(String(value)), "MMM d, yyyy"),
+      render: (value: unknown) =>
+        format(new Date(String(value)), "MMM d, yyyy"),
     },
     {
       header: "End Date",
@@ -229,7 +232,8 @@ const Subscriptions = () => {
       header: "Created",
       accessor: "created_at",
       sortable: true,
-      render: (value: unknown) => format(new Date(String(value)), "MMM d, yyyy"),
+      render: (value: unknown) =>
+        format(new Date(String(value)), "MMM d, yyyy"),
     },
     {
       header: "Actions",
@@ -449,6 +453,7 @@ const Subscriptions = () => {
               <Label htmlFor="editStatus">Status</Label>
               <select
                 id="editStatus"
+                title="Subscription status"
                 value={editForm.status}
                 onChange={(e) =>
                   setEditForm((prev) => ({

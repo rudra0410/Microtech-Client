@@ -1,35 +1,43 @@
-import { useAuth } from '../../hooks/useAuth';
-import { Button } from '../ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Badge } from '../ui/badge';
-import { Shield, RefreshCw, User, Clock } from 'lucide-react';
+import { useAuth } from "../../hooks/useAuth";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Badge } from "../ui/badge";
+import { Shield, RefreshCw, User, Clock } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export const AuthTest = () => {
-  const { 
-    user, 
-    firebaseUser, 
-    isAuthenticated, 
-    isLoading, 
-    error, 
-    refreshToken, 
+  const {
+    user,
+    firebaseUser,
+    isAuthenticated,
+    isLoading,
+    error,
+    refreshToken,
     tokenExpiresAt,
     hasPermission,
     isAdmin,
     isOwner,
-    isSupport
+    isSupport,
   } = useAuth();
 
+  const [now, setNow] = useState(0);
+
+  useEffect(() => {
+    // setNow(Date.now());
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   const formatTime = (timestamp: number | null) => {
-    if (!timestamp) return 'N/A';
+    if (!timestamp) return "N/A";
     return new Date(timestamp).toLocaleString();
   };
 
   const getTimeUntilExpiry = (expiresAt: number | null) => {
-    if (!expiresAt) return 'N/A';
-    const now = Date.now();
+    if (!expiresAt) return "N/A";
     const timeLeft = expiresAt - now;
-    if (timeLeft <= 0) return 'Expired';
-    
+    if (timeLeft <= 0) return "Expired";
+
     const minutes = Math.floor(timeLeft / (1000 * 60));
     const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
     return `${minutes}m ${seconds}s`;
@@ -49,8 +57,8 @@ export const AuthTest = () => {
           <div>
             <span className="text-sm text-slate-500">Status:</span>
             <div className="flex items-center gap-2 mt-1">
-              <Badge variant={isAuthenticated ? 'default' : 'destructive'}>
-                {isAuthenticated ? 'Authenticated' : 'Not Authenticated'}
+              <Badge variant={isAuthenticated ? "default" : "destructive"}>
+                {isAuthenticated ? "Authenticated" : "Not Authenticated"}
               </Badge>
               {isLoading && <Badge variant="outline">Loading...</Badge>}
             </div>
@@ -58,7 +66,7 @@ export const AuthTest = () => {
           <div>
             <span className="text-sm text-slate-500">Firebase User:</span>
             <p className="text-sm font-medium mt-1">
-              {firebaseUser ? '✅ Connected' : '❌ Not Connected'}
+              {firebaseUser ? "✅ Connected" : "❌ Not Connected"}
             </p>
           </div>
         </div>
@@ -87,7 +95,10 @@ export const AuthTest = () => {
               </div>
               <div>
                 <span className="text-slate-500">Status:</span>
-                <Badge variant={user.status === 'active' ? 'default' : 'destructive'} className="text-xs">
+                <Badge
+                  variant={user.status === "active" ? "default" : "destructive"}
+                  className="text-xs"
+                >
                   {user.status}
                 </Badge>
               </div>
@@ -99,14 +110,14 @@ export const AuthTest = () => {
         <div className="border-t pt-4">
           <h4 className="font-medium mb-2">Role Permissions</h4>
           <div className="flex flex-wrap gap-2">
-            <Badge variant={isOwner ? 'default' : 'outline'}>
-              Owner: {isOwner ? '✅' : '❌'}
+            <Badge variant={isOwner ? "default" : "outline"}>
+              Owner: {isOwner ? "✅" : "❌"}
             </Badge>
-            <Badge variant={isAdmin ? 'default' : 'outline'}>
-              Admin: {isAdmin ? '✅' : '❌'}
+            <Badge variant={isAdmin ? "default" : "outline"}>
+              Admin: {isAdmin ? "✅" : "❌"}
             </Badge>
-            <Badge variant={isSupport ? 'default' : 'outline'}>
-              Support: {isSupport ? '✅' : '❌'}
+            <Badge variant={isSupport ? "default" : "outline"}>
+              Support: {isSupport ? "✅" : "❌"}
             </Badge>
           </div>
         </div>
@@ -117,19 +128,19 @@ export const AuthTest = () => {
           <div className="grid grid-cols-2 gap-2 text-sm">
             <div className="flex justify-between">
               <span>Users Create:</span>
-              <span>{hasPermission('users', 'create') ? '✅' : '❌'}</span>
+              <span>{hasPermission("users", "create") ? "✅" : "❌"}</span>
             </div>
             <div className="flex justify-between">
               <span>Users Delete:</span>
-              <span>{hasPermission('users', 'delete') ? '✅' : '❌'}</span>
+              <span>{hasPermission("users", "delete") ? "✅" : "❌"}</span>
             </div>
             <div className="flex justify-between">
               <span>Devices Read:</span>
-              <span>{hasPermission('devices', 'read') ? '✅' : '❌'}</span>
+              <span>{hasPermission("devices", "read") ? "✅" : "❌"}</span>
             </div>
             <div className="flex justify-between">
               <span>Logs Export:</span>
-              <span>{hasPermission('logs', 'export') ? '✅' : '❌'}</span>
+              <span>{hasPermission("logs", "export") ? "✅" : "❌"}</span>
             </div>
           </div>
         </div>
@@ -148,7 +159,9 @@ export const AuthTest = () => {
               </div>
               <div>
                 <span className="text-slate-500">Time Until Expiry:</span>
-                <p className="font-medium">{getTimeUntilExpiry(tokenExpiresAt)}</p>
+                <p className="font-medium">
+                  {getTimeUntilExpiry(tokenExpiresAt)}
+                </p>
               </div>
             </div>
             <Button
@@ -167,7 +180,9 @@ export const AuthTest = () => {
         {error && (
           <div className="border-t pt-4">
             <h4 className="font-medium mb-2 text-red-600">Error</h4>
-            <p className="text-sm text-red-600 bg-red-50 p-2 rounded">{error}</p>
+            <p className="text-sm text-red-600 bg-red-50 p-2 rounded">
+              {error}
+            </p>
           </div>
         )}
 
@@ -182,7 +197,7 @@ export const AuthTest = () => {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Email Verified:</span>
-                <span>{firebaseUser.emailVerified ? '✅' : '❌'}</span>
+                <span>{firebaseUser.emailVerified ? "✅" : "❌"}</span>
               </div>
             </div>
           </div>

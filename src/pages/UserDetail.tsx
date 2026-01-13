@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { format, formatDistanceToNow } from "date-fns";
 import {
@@ -21,6 +21,10 @@ import {
   Loader2,
   Plus,
   CalendarDays,
+  RefreshCw,
+  CircleOff,
+  Ban,
+  CircleCheckBig,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import {
@@ -58,7 +62,10 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Progress } from "../components/ui/progress";
 import { showErrorToast, showSuccessToast } from "../utils/errorHandler";
-import { getSubscriptionStatusInfo, getSubscriptionMessage } from "../utils/subscriptionUtils";
+import {
+  getSubscriptionStatusInfo,
+  getSubscriptionMessage,
+} from "../utils/subscriptionUtils";
 import { userService } from "../services/userService";
 import {
   subscriptionService,
@@ -67,6 +74,7 @@ import {
 import { useCustomPageTitle } from "../hooks/usePageTitle";
 import { useBreadcrumb } from "../context/BreadcrumbContext";
 import type { User } from "../data/mock";
+import { toast } from "sonner";
 
 const UserDetail = () => {
   const { id } = useParams();
@@ -77,10 +85,12 @@ const UserDetail = () => {
     []
   );
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false);
   const [isExtendDialogOpen, setIsExtendDialogOpen] = useState(false);
   const [isExpireDialogOpen, setIsExpireDialogOpen] = useState(false);
+  const [isResumeDialogOpen, setIsResumeDialogOpen] = useState(false);
   const [assignForm, setAssignForm] = useState({
     startDate: "",
     endDate: "",
@@ -126,64 +136,63 @@ const UserDetail = () => {
     return endDate > now ? activeSubscription : null;
   };
 
-  // Fetch user data on component mount
-  useEffect(() => {
-    const fetchUser = async () => {
-      if (!id) {
-        setError("User ID is required");
-        setLoading(false);
-        return;
-      }
+  // Fetch user details and subscriptions
+  const fetchUser = useCallback(async () => {
+    if (!id) {
+      setError("User ID is required");
+      setLoading(false);
+      return;
+    }
 
-      // Set loading state for breadcrumbs
-      setIsLoading(true);
-      setCustomBreadcrumbs([
-        { title: "User Management", path: "/users", isLast: false },
-        { title: "", path: `/users/${id}`, isLast: true }, // Empty title when loading
+    setIsLoading(true);
+    setCustomBreadcrumbs([
+      { title: "User Management", path: "/users", isLast: false },
+      { title: "", path: `/users/${id}`, isLast: true },
+    ]);
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const [userData, subscriptionsData] = await Promise.all([
+        userService.getUserById(id),
+        subscriptionService.getUserSubscriptions(extractNumericId(id)),
       ]);
 
-      try {
-        setLoading(true);
-        setError(null);
-        const [userData, subscriptionsData] = await Promise.all([
-          userService.getUserById(id),
-          subscriptionService.getUserSubscriptions(extractNumericId(id!)),
-        ]);
+      setUser(userData);
+      setUserSubscriptions(subscriptionsData);
 
-        setUser(userData);
-        setUserSubscriptions(subscriptionsData);
+      setEditProfileForm({
+        name: userData.name,
+        email: userData.email,
+        mobile: userData.mobile,
+      });
 
-        // Initialize edit form with user data
-        setEditProfileForm({
-          name: userData.name,
-          email: userData.email,
-          mobile: userData.mobile,
-        });
+      setCustomBreadcrumbs([
+        { title: "User Management", path: "/users", isLast: false },
+        { title: userData.name, path: `/users/${id}`, isLast: true },
+      ]);
 
-        // Update breadcrumbs with actual username
-        setIsLoading(false);
-        setCustomBreadcrumbs([
-          { title: "User Management", path: "/users", isLast: false },
-          { title: userData.name, path: `/users/${id}`, isLast: true },
-        ]);
-        setPageTitle(userData.name);
-      } catch (err) {
-        console.error("Error fetching user:", err);
-        setError("Failed to load user data");
-        // Set error state in breadcrumbs
-        setIsLoading(false);
-        setCustomBreadcrumbs([
-          { title: "User Management", path: "/users", isLast: false },
-          { title: "Error", path: `/users/${id}`, isLast: true },
-        ]);
-        setPageTitle("Error");
-      } finally {
-        setLoading(false);
-      }
-    };
+      setPageTitle(userData.name);
+    } catch (err) {
+      console.error("Error fetching user:", err);
 
-    fetchUser();
+      setError("Failed to load user data");
+      setCustomBreadcrumbs([
+        { title: "User Management", path: "/users", isLast: false },
+        { title: "Error", path: `/users/${id}`, isLast: true },
+      ]);
+      setPageTitle("Error");
+    } finally {
+      setIsLoading(false);
+      setLoading(false);
+    }
   }, [id, setCustomBreadcrumbs, setPageTitle, setIsLoading]);
+
+  // Fetch user data on component mount
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
 
   // Clean up breadcrumbs when component unmounts
   useEffect(() => {
@@ -230,6 +239,21 @@ const UserDetail = () => {
     } catch (err) {
       console.error("Error forcing logout:", err);
       showErrorToast(err, "Failed to logout user");
+    }
+  };
+
+  const handleRefresh = async () => {
+    if (!id) return;
+
+    setRefreshing(true);
+
+    try {
+      await fetchUser();
+      toast.success("User data refreshed");
+    } catch (error) {
+      toast.error("Failed to refresh user");
+    } finally {
+      setRefreshing(false);
     }
   };
 
@@ -323,6 +347,28 @@ const UserDetail = () => {
       setSubmitting(false);
     }
   };
+  const handleResumeSubscription = async () => {
+    if (!user) return;
+
+    try {
+      setSubmitting(true);
+      await subscriptionService.resumeSubscription(extractNumericId(user.id));
+
+      // Refresh subscription data
+      const subscriptionsData = await subscriptionService.getUserSubscriptions(
+        extractNumericId(user.id)
+      );
+      setUserSubscriptions(subscriptionsData);
+
+      setIsResumeDialogOpen(false);
+      showSuccessToast("Subscription resumed successfully");
+    } catch (err) {
+      console.error("Error resuming subscription:", err);
+      showErrorToast(err, "Failed to resume subscription");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const handleEditProfile = async () => {
     if (!user) return;
@@ -394,7 +440,7 @@ const UserDetail = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px]">
+      <div className="flex flex-col items-center justify-center min-h-100">
         <Loader2 className="w-8 h-8 animate-spin text-blue-600 mb-4" />
         <p className="text-slate-500">Loading user details...</p>
       </div>
@@ -404,7 +450,7 @@ const UserDetail = () => {
   // Error state
   if (error || !user) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px]">
+      <div className="flex flex-col items-center justify-center min-h-100">
         <AlertTriangle className="w-12 h-12 text-amber-500 mb-4" />
         <h2 className="text-xl font-semibold text-slate-900 mb-2">
           {error || "User Not Found"}
@@ -565,14 +611,29 @@ const UserDetail = () => {
 
   return (
     <div className="space-y-6">
-      {/* Back Button */}
-      <Button
-        variant="ghost"
-        onClick={() => navigate("/users")}
-        className="mb-2"
-      >
-        <ArrowLeft className="w-4 h-4 mr-2" /> Back to Users
-      </Button>
+      {/* Headers */}
+      <div className="flex items-center justify-between">
+        <Button
+          variant="ghost"
+          onClick={() => navigate("/users")}
+          className="mb-2"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Users
+        </Button>
+        <Button
+          variant="outline"
+          onClick={handleRefresh}
+          disabled={refreshing}
+          className="flex items-center gap-2"
+        >
+          <RefreshCw
+            className={`w-4 h-4 transition-transform ${
+              refreshing ? "animate-spin text-blue-500" : ""
+            }`}
+          />
+          {refreshing ? "Refreshing..." : "Refresh"}
+        </Button>
+      </div>
 
       {/* User Header */}
       <div className="bg-white rounded-xl border border-slate-200 p-6">
@@ -764,7 +825,9 @@ const UserDetail = () => {
                       Subscription Status
                     </Label>
                     <div className="mt-1 space-y-1">
-                      <StatusBadge status={getSubscriptionStatusInfo(user).status} />
+                      <StatusBadge
+                        status={getSubscriptionStatusInfo(user).status}
+                      />
                       <p className="text-xs text-slate-500">
                         {getSubscriptionStatusInfo(user).message}
                       </p>
@@ -829,7 +892,7 @@ const UserDetail = () => {
                     <CreditCard className="w-5 h-5 text-slate-600" />
                     <div>
                       <p className="text-sm text-slate-500">Subscription</p>
-                      <StatusBadge status={getSubscriptionStatusInfo(user).status} />
+                      <StatusBadge status={user.subscriptionStatus} />
                       <p className="text-xs text-slate-400 mt-1">
                         {getSubscriptionStatusInfo(user).message}
                       </p>
@@ -869,17 +932,30 @@ const UserDetail = () => {
                           size="sm"
                           onClick={() => setIsExpireDialogOpen(true)}
                         >
+                          <Ban className="w-4 h-4 mr-2 text-red-500" />
                           Expire
                         </Button>
                       </>
                     ) : (
-                      <Button
-                        onClick={() => setIsAssignDialogOpen(true)}
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
-                      >
-                        <Plus className="w-4 h-4 mr-2" />
-                        Assign Subscription
-                      </Button>
+                      <>
+                        <Button
+                          onClick={() => setIsAssignDialogOpen(true)}
+                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                          <Plus className="w-4 h-4 mr-2" />
+                          Assign Subscription
+                        </Button>
+                        {user.subscriptionStatus === "cancelled" && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setIsResumeDialogOpen(true)}
+                            >
+                            <CircleCheckBig className="w-4 h-4 mr-2 text-green-500" />
+                            Resume
+                          </Button>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
@@ -956,9 +1032,11 @@ const UserDetail = () => {
                   ) : (
                     <div className="text-center py-8">
                       <CreditCard className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                      <p className="text-slate-500 mb-2">No Active Subscription</p>
+                      <p className="text-slate-500 mb-2">
+                        No Active Subscription
+                      </p>
                       <p className="text-sm text-slate-400 mb-4">
-                        {getSubscriptionMessage(user, 'detailed')}
+                        {getSubscriptionMessage(user, "detailed")}
                       </p>
                       {/* <Button 
                         onClick={() => setIsAssignDialogOpen(true)}
@@ -1239,9 +1317,9 @@ const UserDetail = () => {
       <Dialog open={isExpireDialogOpen} onOpenChange={setIsExpireDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Expire Subscription</DialogTitle>
+            <DialogTitle>Cancel Subscription</DialogTitle>
             <DialogDescription>
-              Are you sure you want to expire this user's subscription? This
+              Are you sure you want to cancel this user's subscription? This
               action cannot be undone.
             </DialogDescription>
           </DialogHeader>
@@ -1283,12 +1361,59 @@ const UserDetail = () => {
         </DialogContent>
       </Dialog>
 
+      {/* Resume Subscription Confirmation Dialog */}
+      <Dialog open={isResumeDialogOpen} onOpenChange={setIsResumeDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Resume Subscription</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to resume this user's subscription? This
+              action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <div className="flex items-center gap-3 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+              {/* <AlertTriangle className="w-5 h-5 text-amber-600" /> */}
+              <div>
+                {/* <p className="font-medium text-amber-800">Warning</p> */}
+                <p className="text-sm text-amber-700">
+                  The user will immediately gain access to their subscription
+                  benefits.
+                </p>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsResumeDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleResumeSubscription}
+              disabled={submitting}
+              variant="destructive"
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              {submitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Resuming...
+                </>
+              ) : (
+                "Yes, Resume Subscription"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       {/* Edit Profile Dialog */}
       <Dialog
         open={isEditProfileDialogOpen}
         onOpenChange={setIsEditProfileDialogOpen}
       >
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-125">
           <DialogHeader>
             <DialogTitle>Edit User Profile</DialogTitle>
             <DialogDescription>
