@@ -1,5 +1,5 @@
-import { createContext } from "react";
 import type { User } from "firebase/auth";
+import { createContext } from "react";
 import type { Admin } from "../data/mock";
 
 interface AuthContextType {

@@ -1,81 +1,106 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { 
-  subscriptionService, 
-  Subscription, 
-  SubscriptionWithUser 
-} from '../../services/subscriptionService';
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  Subscription,
+  subscriptionService,
+  SubscriptionWithUser,
+} from "../../services/subscriptionService";
 
 // Async thunks
 export const fetchAllSubscriptions = createAsyncThunk(
-  'subscriptions/fetchAll',
+  "subscriptions/fetchAll",
   async () => {
     const response = await subscriptionService.getAllSubscriptions();
     return response;
-  }
+  },
 );
 
 export const fetchSubscriptionById = createAsyncThunk(
-  'subscriptions/fetchById',
+  "subscriptions/fetchById",
   async (userId: string) => {
     const response = await subscriptionService.getSubscriptionById(userId);
     return response;
-  }
+  },
 );
 
 export const assignSubscription = createAsyncThunk(
-  'subscriptions/assign',
-  async ({ userId, startDate, endDate }: { userId: string; startDate: string; endDate: string }) => {
-    const response = await subscriptionService.assignSubscription(userId, startDate, endDate);
+  "subscriptions/assign",
+  async ({
+    userId,
+    startDate,
+    endDate,
+  }: {
+    userId: string;
+    startDate: string;
+    endDate: string;
+  }) => {
+    const response = await subscriptionService.assignSubscription(
+      userId,
+      startDate,
+      endDate,
+    );
     return response;
-  }
+  },
 );
 
 export const updateSubscription = createAsyncThunk(
-  'subscriptions/update',
-  async ({ subscriptionId, updateData }: { subscriptionId: string; updateData: Partial<Subscription> }) => {
-    const response = await subscriptionService.updateSubscription(subscriptionId, updateData);
+  "subscriptions/update",
+  async ({
+    subscriptionId,
+    updateData,
+  }: {
+    subscriptionId: string;
+    updateData: Partial<Subscription>;
+  }) => {
+    const response = await subscriptionService.updateSubscription(
+      subscriptionId,
+      updateData,
+    );
     return response;
-  }
+  },
 );
 
 export const extendSubscription = createAsyncThunk(
-  'subscriptions/extend',
+  "subscriptions/extend",
   async ({ userId, newEndDate }: { userId: string; newEndDate: string }) => {
-    const response = await subscriptionService.extendSubscription(userId, newEndDate);
+    const response = await subscriptionService.extendSubscription(
+      userId,
+      newEndDate,
+    );
     return response;
-  }
+  },
 );
 
 export const expireSubscription = createAsyncThunk(
-  'subscriptions/expire',
+  "subscriptions/expire",
   async (userId: string) => {
     const response = await subscriptionService.expireSubscription(userId);
     return response;
-  }
+  },
 );
 
 export const deleteSubscription = createAsyncThunk(
-  'subscriptions/delete',
+  "subscriptions/delete",
   async (subscriptionId: string) => {
     await subscriptionService.deleteSubscription(subscriptionId);
     return subscriptionId;
-  }
+  },
 );
 
 export const fetchUserSubscriptions = createAsyncThunk(
-  'subscriptions/fetchUserSubscriptions',
+  "subscriptions/fetchUserSubscriptions",
   async (userId: string) => {
     const response = await subscriptionService.getUserSubscriptions(userId);
     return { userId, subscriptions: response };
-  }
+  },
 );
 
 export const fetchUserActiveSubscription = createAsyncThunk(
-  'subscriptions/fetchUserActiveSubscription',
+  "subscriptions/fetchUserActiveSubscription",
   async (userId: string) => {
-    const response = await subscriptionService.getUserActiveSubscription(userId);
+    const response =
+      await subscriptionService.getUserActiveSubscription(userId);
     return { userId, subscription: response };
-  }
+  },
 );
 
 // State interface
@@ -102,7 +127,7 @@ const initialState: SubscriptionState = {
 
 // Slice
 const subscriptionSlice = createSlice({
-  name: 'subscriptions',
+  name: "subscriptions",
   initialState,
   reducers: {
     clearError: (state) => {
@@ -111,7 +136,10 @@ const subscriptionSlice = createSlice({
     clearSelectedSubscription: (state) => {
       state.selectedSubscription = null;
     },
-    setSelectedSubscription: (state, action: PayloadAction<SubscriptionWithUser>) => {
+    setSelectedSubscription: (
+      state,
+      action: PayloadAction<SubscriptionWithUser>,
+    ) => {
       state.selectedSubscription = action.payload;
     },
   },
@@ -129,7 +157,7 @@ const subscriptionSlice = createSlice({
       })
       .addCase(fetchAllSubscriptions.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch subscriptions';
+        state.error = action.error.message || "Failed to fetch subscriptions";
       });
 
     // Fetch subscription by ID
@@ -144,7 +172,7 @@ const subscriptionSlice = createSlice({
       })
       .addCase(fetchSubscriptionById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch subscription';
+        state.error = action.error.message || "Failed to fetch subscription";
       });
 
     // Assign subscription
@@ -159,7 +187,7 @@ const subscriptionSlice = createSlice({
       })
       .addCase(assignSubscription.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to assign subscription';
+        state.error = action.error.message || "Failed to assign subscription";
       });
 
     // Update subscription
@@ -170,18 +198,26 @@ const subscriptionSlice = createSlice({
       })
       .addCase(updateSubscription.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.subscriptions.findIndex(sub => sub.id === action.payload.id);
+        const index = state.subscriptions.findIndex(
+          (sub) => sub.id === action.payload.id,
+        );
         if (index !== -1) {
           // Update the subscription while preserving user data
-          state.subscriptions[index] = { ...state.subscriptions[index], ...action.payload };
+          state.subscriptions[index] = {
+            ...state.subscriptions[index],
+            ...action.payload,
+          };
         }
         if (state.selectedSubscription?.id === action.payload.id) {
-          state.selectedSubscription = { ...state.selectedSubscription, ...action.payload };
+          state.selectedSubscription = {
+            ...state.selectedSubscription,
+            ...action.payload,
+          };
         }
       })
       .addCase(updateSubscription.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to update subscription';
+        state.error = action.error.message || "Failed to update subscription";
       });
 
     // Extend subscription
@@ -192,14 +228,19 @@ const subscriptionSlice = createSlice({
       })
       .addCase(extendSubscription.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.subscriptions.findIndex(sub => sub.user_id === action.payload.user_id);
+        const index = state.subscriptions.findIndex(
+          (sub) => sub.user_id === action.payload.user_id,
+        );
         if (index !== -1) {
-          state.subscriptions[index] = { ...state.subscriptions[index], ...action.payload };
+          state.subscriptions[index] = {
+            ...state.subscriptions[index],
+            ...action.payload,
+          };
         }
       })
       .addCase(extendSubscription.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to extend subscription';
+        state.error = action.error.message || "Failed to extend subscription";
       });
 
     // Expire subscription
@@ -211,16 +252,21 @@ const subscriptionSlice = createSlice({
       .addCase(expireSubscription.fulfilled, (state, action) => {
         state.loading = false;
         // Update all subscriptions for the user
-        action.payload.forEach(updatedSub => {
-          const index = state.subscriptions.findIndex(sub => sub.id === updatedSub.id);
+        action.payload.forEach((updatedSub) => {
+          const index = state.subscriptions.findIndex(
+            (sub) => sub.id === updatedSub.id,
+          );
           if (index !== -1) {
-            state.subscriptions[index] = { ...state.subscriptions[index], ...updatedSub };
+            state.subscriptions[index] = {
+              ...state.subscriptions[index],
+              ...updatedSub,
+            };
           }
         });
       })
       .addCase(expireSubscription.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to expire subscription';
+        state.error = action.error.message || "Failed to expire subscription";
       });
 
     // Delete subscription
@@ -231,7 +277,9 @@ const subscriptionSlice = createSlice({
       })
       .addCase(deleteSubscription.fulfilled, (state, action) => {
         state.loading = false;
-        state.subscriptions = state.subscriptions.filter(sub => sub.id !== action.payload);
+        state.subscriptions = state.subscriptions.filter(
+          (sub) => sub.id !== action.payload,
+        );
         state.totalCount -= 1;
         if (state.selectedSubscription?.id === action.payload) {
           state.selectedSubscription = null;
@@ -239,7 +287,7 @@ const subscriptionSlice = createSlice({
       })
       .addCase(deleteSubscription.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to delete subscription';
+        state.error = action.error.message || "Failed to delete subscription";
       });
 
     // Fetch user subscriptions
@@ -250,11 +298,13 @@ const subscriptionSlice = createSlice({
       })
       .addCase(fetchUserSubscriptions.fulfilled, (state, action) => {
         state.loading = false;
-        state.userSubscriptions[action.payload.userId] = action.payload.subscriptions;
+        state.userSubscriptions[action.payload.userId] =
+          action.payload.subscriptions;
       })
       .addCase(fetchUserSubscriptions.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch user subscriptions';
+        state.error =
+          action.error.message || "Failed to fetch user subscriptions";
       });
 
     // Fetch user active subscription
@@ -265,19 +315,21 @@ const subscriptionSlice = createSlice({
       })
       .addCase(fetchUserActiveSubscription.fulfilled, (state, action) => {
         state.loading = false;
-        state.userActiveSubscriptions[action.payload.userId] = action.payload.subscription;
+        state.userActiveSubscriptions[action.payload.userId] =
+          action.payload.subscription;
       })
       .addCase(fetchUserActiveSubscription.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch user active subscription';
+        state.error =
+          action.error.message || "Failed to fetch user active subscription";
       });
   },
 });
 
-export const { 
-  clearError, 
-  clearSelectedSubscription, 
-  setSelectedSubscription 
+export const {
+  clearError,
+  clearSelectedSubscription,
+  setSelectedSubscription,
 } = subscriptionSlice.actions;
 
 export default subscriptionSlice.reducer;

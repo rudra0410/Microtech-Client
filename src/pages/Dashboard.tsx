@@ -1,43 +1,43 @@
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import {
-  Users,
-  CreditCard,
-  Cpu,
-  TrendingUp,
-  TrendingDown,
-  AlertTriangle,
-  AlertCircle,
-  Info,
-  ArrowRight,
-  Activity,
-  RefreshCw,
-} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { useDashboard } from "../hooks";
-import type { DashboardAlert, ChartData } from "../services/dashboardService";
+import {
+  Activity,
+  AlertCircle,
+  AlertTriangle,
+  ArrowRight,
+  Cpu,
+  CreditCard,
+  Info,
+  RefreshCw,
+  TrendingDown,
+  TrendingUp,
+  Users,
+} from "lucide-react";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import {
+  Area,
+  AreaChart,
+  Cell,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { Button } from "../components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "../components/ui/card";
-import { Button } from "../components/ui/button";
 import { Progress } from "../components/ui/progress";
 import { Skeleton } from "../components/ui/skeleton";
+import { useDashboard } from "../hooks";
 import { cn } from "../lib/utils";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-} from "recharts";
+import type { ChartData, DashboardAlert } from "../services/dashboardService";
 
 interface StatCardProps {
   title: string;
@@ -309,7 +309,7 @@ const Dashboard: React.FC = () => {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <div className="text-center">
           <AlertCircle className="h-8 w-8 text-red-500 mx-auto mb-4" />
           <p className="text-red-600">{error}</p>
@@ -419,7 +419,7 @@ const Dashboard: React.FC = () => {
             {subscriptionChart.length > 0 &&
             subscriptionChart.some((item: ChartData) => item.value > 0) ? (
               <div className="flex items-center">
-                <div className="w-40 h-40 min-w-[160px] min-h-[160px] shrink-0">
+                <div className="w-40 h-40 min-w-40 min-h-40 shrink-0">
                   <ResponsiveContainer width={160} height={160}>
                     <PieChart width={160} height={160}>
                       <Pie
@@ -490,7 +490,7 @@ const Dashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             {userGrowth.length > 0 ? (
-              <div className="h-48 min-h-[192px] w-full">
+              <div className="h-48 min-h-48 w-full">
                 <ResponsiveContainer width="100%" height={192}>
                   <AreaChart
                     data={userGrowth}
@@ -563,7 +563,7 @@ const Dashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             {monthlyUsers.length > 0 ? (
-              <div className="h-48 min-h-[192px] w-full">
+              <div className="h-48 min-h-48 w-full">
                 <ResponsiveContainer width="100%" height={192}>
                   <AreaChart
                     data={monthlyUsers}

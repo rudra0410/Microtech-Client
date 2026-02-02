@@ -1,10 +1,11 @@
 // Redux hooks
-export { useUsers } from './useUsers';
 export { useDashboard } from './useDashboard';
 export { useSubscriptions } from './useSubscriptions';
+export { useUsers } from './useUsers';
 
 // Utility hooks
-export { usePageTitle, useCustomPageTitle, usePageTitleWithBase } from './usePageTitle';
+export { useCustomPageTitle, usePageTitle, usePageTitleWithBase } from './usePageTitle';
 
 // Re-export store hooks
 export { useAppDispatch, useAppSelector } from '../store';
+

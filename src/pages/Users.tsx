@@ -1,33 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { formatDistanceToNow, format } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import {
-  Plus,
-  MoreHorizontal,
   Eye,
   EyeOff,
-  Pencil,
-  UserX,
-  UserCheck,
-  RotateCcw,
-  RefreshCw,
   Loader2,
+  Plus,
+  RefreshCw,
+  UserCheck,
+  UserX
 } from "lucide-react";
-import { type User } from "../data/mock";
-import { type CreateUserData } from "../services/userService";
-import { useUsers } from "../hooks";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import DataTable from "../components/common/DataTable";
-import StatusBadge from "../components/common/StatusBadge";
 import { TableSkeleton } from "../components/common/LoadingState";
+import StatusBadge from "../components/common/StatusBadge";
 import { Button } from "../components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu";
 import {
   Dialog,
   DialogContent,
@@ -38,13 +26,15 @@ import {
 } from "../components/ui/dialog";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
-import { toast } from "sonner";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../components/ui/tooltip";
+import { type User } from "../data/mock";
+import { useUsers } from "../hooks";
+import { type CreateUserData } from "../services/userService";
 import {
   getSubscriptionMessage,
   getSubscriptionStatusInfo,

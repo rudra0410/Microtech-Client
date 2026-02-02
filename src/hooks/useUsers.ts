@@ -1,88 +1,86 @@
-import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '../store';
+import { useCallback } from "react";
+import type { User } from "../data/mock";
+import type {
+  CreateUserData,
+  UpdateUserData,
+  UserFilters,
+} from "../services/userService";
+import { useAppDispatch, useAppSelector } from "../store";
 import {
-  fetchUsers,
-  fetchUserById,
+  clearError,
+  clearSelectedUser,
   createUser,
-  updateUser,
-  updateUserStatus,
   deleteUser,
+  fetchUserById,
+  fetchUsers,
   forceLogoutUser,
   resetUserSubscription,
-  clearError,
   setFilters,
-  clearSelectedUser,
   setSelectedUser,
-} from '../store/slices/userSlice';
-import type { CreateUserData, UpdateUserData, UserFilters } from '../services/userService';
-import type { User } from '../data/mock';
+  updateUser,
+  updateUserStatus,
+} from "../store/slices/userSlice";
 
 export const useUsers = () => {
   const dispatch = useAppDispatch();
-  const {
-    users,
-    selectedUser,
-    loading,
-    error,
-    filters,
-    totalCount,
-  } = useAppSelector((state) => state.users);
+  const { users, selectedUser, loading, error, filters, totalCount } =
+    useAppSelector((state) => state.users);
 
   // Actions
   const loadUsers = useCallback(
     (filters?: UserFilters) => {
       dispatch(fetchUsers(filters));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const loadUserById = useCallback(
     (userId: string) => {
       dispatch(fetchUserById(userId));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const createNewUser = useCallback(
     (userData: CreateUserData) => {
       return dispatch(createUser(userData));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const updateUserData = useCallback(
     (userId: string, userData: UpdateUserData) => {
       return dispatch(updateUser({ userId, userData }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const toggleUserStatus = useCallback(
     (userId: string, isActive: boolean) => {
       return dispatch(updateUserStatus({ userId, isActive }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const removeUser = useCallback(
     (userId: string) => {
       return dispatch(deleteUser(userId));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const forceUserLogout = useCallback(
     (userId: string) => {
       return dispatch(forceLogoutUser(userId));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const resetSubscription = useCallback(
     (userId: string) => {
       return dispatch(resetUserSubscription(userId));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const clearUserError = useCallback(() => {
@@ -93,7 +91,7 @@ export const useUsers = () => {
     (newFilters: UserFilters) => {
       dispatch(setFilters(newFilters));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const clearSelected = useCallback(() => {
@@ -104,7 +102,7 @@ export const useUsers = () => {
     (user: User) => {
       dispatch(setSelectedUser(user));
     },
-    [dispatch]
+    [dispatch],
   );
 
   return {
@@ -115,7 +113,7 @@ export const useUsers = () => {
     error,
     filters,
     totalCount,
-    
+
     // Actions
     loadUsers,
     loadUserById,

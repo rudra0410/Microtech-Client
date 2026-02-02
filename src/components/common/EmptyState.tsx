@@ -1,7 +1,7 @@
+import { AlertCircle, FileQuestion, Inbox, LucideIcon, Search } from 'lucide-react';
 import React from 'react';
-import { Inbox, Search, FileQuestion, AlertCircle, LucideIcon } from 'lucide-react';
-import { Button } from '../ui/button';
 import { cn } from '../../lib/utils';
+import { Button } from '../ui/button';
 
 type EmptyStateType = 'empty' | 'search' | 'notFound' | 'error';
 

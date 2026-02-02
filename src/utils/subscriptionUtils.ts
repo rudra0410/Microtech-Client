@@ -40,15 +40,13 @@ export const getSubscriptionStatusInfo = (user: User) => {
           addSuffix: true,
         })}`
       : "Subscription expired";
-  }
-   else if (status === "cancelled") {
+  } else if (status === "cancelled") {
     message = user.subscriptionExpiry
       ? `Cancelled ${formatDistanceToNow(new Date(user.subscriptionExpiry), {
           addSuffix: true,
         })}`
       : "Subscription cancelled";
-  } 
-  else if (status === "active") {
+  } else if (status === "active") {
     message = user.subscriptionExpiry
       ? `Expires ${formatDistanceToNow(new Date(user.subscriptionExpiry), {
           addSuffix: true,
@@ -122,7 +120,7 @@ export const getSubscriptionStatusInfoAdmin = (user: User) => {
  */
 export const getSubscriptionMessage = (
   user: User,
-  context: "short" | "detailed" = "short"
+  context: "short" | "detailed" = "short",
 ) => {
   const info = getSubscriptionStatusInfo(user);
 

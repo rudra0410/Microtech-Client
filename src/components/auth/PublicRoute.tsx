@@ -1,15 +1,15 @@
+import { Loader2 } from 'lucide-react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { Loader2 } from 'lucide-react';
 
 interface PublicRouteProps {
   children: React.ReactNode;
   redirectTo?: string;
 }
 
-export const PublicRoute: React.FC<PublicRouteProps> = ({ 
-  children, 
-  redirectTo = '/dashboard' 
+export const PublicRoute: React.FC<PublicRouteProps> = ({
+  children,
+  redirectTo = '/dashboard'
 }) => {
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();

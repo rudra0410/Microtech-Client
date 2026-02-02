@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { apiService } from "../services/apiService";
 import { Button } from "./ui/button";
 
@@ -42,24 +42,23 @@ export const ConnectionTest = () => {
       <h3 className="text-lg font-semibold mb-2">Server Connection Status</h3>
       <div className="flex items-center gap-2 mb-2">
         <div
-          className={`w-3 h-3 rounded-full ${
-            status === "success"
+          className={`w-3 h-3 rounded-full ${status === "success"
               ? "bg-green-500"
               : status === "error"
-              ? "bg-red-500"
-              : status === "loading"
-              ? "bg-yellow-500"
-              : "bg-gray-500"
-          }`}
+                ? "bg-red-500"
+                : status === "loading"
+                  ? "bg-yellow-500"
+                  : "bg-gray-500"
+            }`}
         />
         <span className="text-sm">
           {status === "success"
             ? "Connected"
             : status === "error"
-            ? "Disconnected"
-            : status === "loading"
-            ? "Connecting..."
-            : "Unknown"}
+              ? "Disconnected"
+              : status === "loading"
+                ? "Connecting..."
+                : "Unknown"}
         </span>
       </div>
       <p className="text-sm text-gray-600 mb-2">{message}</p>

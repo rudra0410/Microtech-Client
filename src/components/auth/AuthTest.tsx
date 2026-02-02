@@ -1,9 +1,9 @@
+import { Clock, RefreshCw, Shield, User } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Badge } from "../ui/badge";
-import { Shield, RefreshCw, User, Clock } from "lucide-react";
-import { useState, useEffect } from "react";
 
 export const AuthTest = () => {
   const {

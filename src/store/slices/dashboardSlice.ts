@@ -1,69 +1,69 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { 
-  dashboardService, 
-  DashboardStats, 
-  ChartData, 
-  UserGrowthData, 
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  ChartData,
+  DashboardAlert,
+  dashboardService,
+  DashboardStats,
+  DeviceUsageData,
   MonthlyUsersData,
-  DeviceUsageData, 
-  DashboardAlert
-} from '../../services/dashboardService';
+  UserGrowthData,
+} from "../../services/dashboardService";
 
 // Async thunks
 export const fetchDashboardStats = createAsyncThunk(
-  'dashboard/fetchStats',
+  "dashboard/fetchStats",
   async () => {
     const response = await dashboardService.getDashboardStats();
     return response;
-  }
+  },
 );
 
 export const fetchSubscriptionChartData = createAsyncThunk(
-  'dashboard/fetchSubscriptionChart',
+  "dashboard/fetchSubscriptionChart",
   async () => {
     const response = await dashboardService.getSubscriptionChartData();
     return response;
-  }
+  },
 );
 
 export const fetchUserGrowthData = createAsyncThunk(
-  'dashboard/fetchUserGrowth',
+  "dashboard/fetchUserGrowth",
   async () => {
     const response = await dashboardService.getUserGrowthData();
     return response;
-  }
+  },
 );
 
 export const fetchMonthlyUsersData = createAsyncThunk(
-  'dashboard/fetchMonthlyUsers',
+  "dashboard/fetchMonthlyUsers",
   async () => {
     const response = await dashboardService.getMonthlyUsersData();
     return response;
-  }
+  },
 );
 
 export const fetchDeviceUsageData = createAsyncThunk(
-  'dashboard/fetchDeviceUsage',
+  "dashboard/fetchDeviceUsage",
   async () => {
     const response = await dashboardService.getDeviceUsageData();
     return response;
-  }
+  },
 );
 
 export const fetchDashboardAlerts = createAsyncThunk(
-  'dashboard/fetchAlerts',
+  "dashboard/fetchAlerts",
   async () => {
     const response = await dashboardService.getDashboardAlerts();
     return response;
-  }
+  },
 );
 
 export const fetchAllDashboardData = createAsyncThunk(
-  'dashboard/fetchAllData',
+  "dashboard/fetchAllData",
   async () => {
     const response = await dashboardService.getAllDashboardData();
     return response;
-  }
+  },
 );
 
 // State interface
@@ -110,7 +110,7 @@ const initialState: DashboardState = {
 
 // Slice
 const dashboardSlice = createSlice({
-  name: 'dashboard',
+  name: "dashboard",
   initialState,
   reducers: {
     clearError: (state) => {
@@ -134,7 +134,7 @@ const dashboardSlice = createSlice({
       })
       .addCase(fetchDashboardStats.rejected, (state, action) => {
         state.loading.stats = false;
-        state.error = action.error.message || 'Failed to fetch dashboard stats';
+        state.error = action.error.message || "Failed to fetch dashboard stats";
       });
 
     // Fetch subscription chart data
@@ -149,7 +149,8 @@ const dashboardSlice = createSlice({
       })
       .addCase(fetchSubscriptionChartData.rejected, (state, action) => {
         state.loading.subscriptionChart = false;
-        state.error = action.error.message || 'Failed to fetch subscription chart data';
+        state.error =
+          action.error.message || "Failed to fetch subscription chart data";
       });
 
     // Fetch user growth data
@@ -164,7 +165,8 @@ const dashboardSlice = createSlice({
       })
       .addCase(fetchUserGrowthData.rejected, (state, action) => {
         state.loading.userGrowth = false;
-        state.error = action.error.message || 'Failed to fetch user growth data';
+        state.error =
+          action.error.message || "Failed to fetch user growth data";
       });
 
     // Fetch monthly users data
@@ -179,7 +181,8 @@ const dashboardSlice = createSlice({
       })
       .addCase(fetchMonthlyUsersData.rejected, (state, action) => {
         state.loading.monthlyUsers = false;
-        state.error = action.error.message || 'Failed to fetch monthly users data';
+        state.error =
+          action.error.message || "Failed to fetch monthly users data";
       });
 
     // Fetch device usage data
@@ -194,7 +197,8 @@ const dashboardSlice = createSlice({
       })
       .addCase(fetchDeviceUsageData.rejected, (state, action) => {
         state.loading.deviceUsage = false;
-        state.error = action.error.message || 'Failed to fetch device usage data';
+        state.error =
+          action.error.message || "Failed to fetch device usage data";
       });
 
     // Fetch dashboard alerts
@@ -209,7 +213,8 @@ const dashboardSlice = createSlice({
       })
       .addCase(fetchDashboardAlerts.rejected, (state, action) => {
         state.loading.alerts = false;
-        state.error = action.error.message || 'Failed to fetch dashboard alerts';
+        state.error =
+          action.error.message || "Failed to fetch dashboard alerts";
       });
 
     // Fetch all dashboard data
@@ -230,7 +235,7 @@ const dashboardSlice = createSlice({
       })
       .addCase(fetchAllDashboardData.rejected, (state, action) => {
         state.loading.all = false;
-        state.error = action.error.message || 'Failed to fetch dashboard data';
+        state.error = action.error.message || "Failed to fetch dashboard data";
       });
   },
 });

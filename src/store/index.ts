@@ -1,10 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
+import { configureStore } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 // Import slices
-import userSlice from './slices/userSlice';
-import dashboardSlice from './slices/dashboardSlice';
-import subscriptionSlice from './slices/subscriptionSlice';
+import dashboardSlice from "./slices/dashboardSlice";
+import subscriptionSlice from "./slices/subscriptionSlice";
+import userSlice from "./slices/userSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +15,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['persist/PERSIST'],
+        ignoredActions: ["persist/PERSIST"],
       },
     }),
 });

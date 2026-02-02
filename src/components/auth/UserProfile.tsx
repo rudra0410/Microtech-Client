@@ -1,6 +1,6 @@
 import { useAuth } from '../../hooks/useAuth';
-import { Badge } from '../ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Badge } from '../ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 
 export const UserProfile = () => {
@@ -57,18 +57,18 @@ export const UserProfile = () => {
               {getUserInitials(user.name)}
             </AvatarFallback>
           </Avatar>
-          
+
           <div className="flex-1">
             <h3 className="font-semibold text-slate-900">{user.name || 'Unknown User'}</h3>
             <p className="text-sm text-slate-500">{user.email || 'No email'}</p>
             <div className="flex items-center gap-2 mt-2">
-              <Badge 
+              <Badge
                 variant={getRoleBadgeVariant(user.role)}
                 className={getRoleColor(user.role)}
               >
                 {user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'Unknown'}
               </Badge>
-              <Badge 
+              <Badge
                 variant={user.status === 'active' ? 'default' : 'destructive'}
                 className="text-xs"
               >
@@ -77,7 +77,7 @@ export const UserProfile = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="mt-4 pt-4 border-t border-slate-100">
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
@@ -87,19 +87,19 @@ export const UserProfile = () => {
             <div>
               <span className="text-slate-500">Last Login:</span>
               <p className="font-medium">
-                {user.lastLogin 
+                {user.lastLogin
                   ? new Date(user.lastLogin).toLocaleDateString()
                   : 'Never'
                 }
               </p>
             </div>
           </div>
-          
+
           <div className="mt-3">
             <span className="text-slate-500 text-sm">User ID:</span>
             <p className="font-mono text-xs text-slate-600 mt-1">{user.id}</p>
           </div>
-          
+
           {user.permissions && user.permissions.length > 0 && (
             <div className="mt-3">
               <span className="text-slate-500 text-sm">Permissions:</span>

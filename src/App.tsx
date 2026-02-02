@@ -1,19 +1,19 @@
-import "./App.css";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster } from "sonner";
+import "./App.css";
+import { ProtectedRoute, PublicRoute } from "./components/auth";
 import { AuthProvider } from "./context/AuthContextProvider";
 import { BreadcrumbProvider } from "./context/BreadcrumbContext";
-import { ReduxProvider } from "./store/Provider";
-import { ProtectedRoute, PublicRoute } from "./components/auth";
 import { usePageTitle } from "./hooks/usePageTitle";
 import Login from "./pages/Login";
-import Users from "./pages/Users";
-import UserDetail from "./pages/UserDetail";
 import Subscriptions from "./pages/Subscriptions";
+import UserDetail from "./pages/UserDetail";
+import Users from "./pages/Users";
+import { ReduxProvider } from "./store/Provider";
 // import Notifications from "./pages/Notifications";
-import Settings from "./pages/Settings";
 import AppLayout from "./components/layout/AppLayout";
 import Dashboard from "./pages/Dashboard";
+import Settings from "./pages/Settings";
 
 // Component to handle page title updates
 const PageTitleManager = () => {

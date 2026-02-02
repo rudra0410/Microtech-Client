@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import * as React from "react"
-
 import { cn } from "../../lib/utils"
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -50,5 +49,5 @@ const CardFooter = React.forwardRef<HTMLDivElement, CardProps>(({ className, ...
 ))
 CardFooter.displayName = "CardFooter"
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 

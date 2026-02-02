@@ -1,8 +1,8 @@
+import { AlertTriangle, RefreshCw, Shield } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { Shield, AlertTriangle, RefreshCw } from 'lucide-react';
-import { Button } from '../ui/button';
 import { Alert, AlertDescription } from '../ui/alert';
+import { Button } from '../ui/button';
 
 export const TokenStatus: React.FC = () => {
   const { tokenExpiresAt, refreshToken, isAuthenticated } = useAuth();
@@ -50,7 +50,7 @@ export const TokenStatus: React.FC = () => {
 
   // Show warning if token expires in less than 10 minutes
   const showWarning = minutes < 10;
-  
+
   // Show critical alert if token expires in less than 2 minutes
   const showCritical = minutes < 2;
 

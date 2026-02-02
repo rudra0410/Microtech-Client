@@ -1,10 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
+import { Slot } from "@radix-ui/react-slot";
+import * as React from "react";
 import { Controller, FormProvider, useFormContext } from "react-hook-form";
-
-import { cn } from "../../lib/utils"
-import { Label } from "./label"
+import { cn } from "../../lib/utils";
+import { Label } from "./label";
 
 const Form = FormProvider
 
@@ -152,13 +151,8 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, FormMessageProps>(({ 
 FormMessage.displayName = "FormMessage"
 
 export {
-  useFormField,
-  Form,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormDescription,
-  FormMessage,
-  FormField,
-}
+  Form, FormControl,
+  FormDescription, FormField, FormItem,
+  FormLabel, FormMessage, useFormField
+};
 

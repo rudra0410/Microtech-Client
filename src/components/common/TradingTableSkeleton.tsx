@@ -1,6 +1,6 @@
 import React from 'react';
-import { Skeleton } from '../ui/skeleton';
 import { cn } from '../../lib/utils';
+import { Skeleton } from '../ui/skeleton';
 
 interface TradingTableSkeletonProps {
   rows?: number;
@@ -42,66 +42,66 @@ export const TradingTableSkeleton: React.FC<TradingTableSkeletonProps> = ({ rows
                 <td className="px-6 py-4">
                   <Skeleton className={cn(
                     "h-4",
-                    rowIndex === 0 ? "w-16" : 
-                    rowIndex === 1 ? "w-20" : 
-                    rowIndex === 2 ? "w-18" :
-                    rowIndex === 3 ? "w-12" :
-                    rowIndex === 4 ? "w-14" : "w-16"
+                    rowIndex === 0 ? "w-16" :
+                      rowIndex === 1 ? "w-20" :
+                        rowIndex === 2 ? "w-18" :
+                          rowIndex === 3 ? "w-12" :
+                            rowIndex === 4 ? "w-14" : "w-16"
                   )} />
                 </td>
                 {/* Commodity column - medium values */}
                 <td className="px-6 py-4">
                   <Skeleton className={cn(
                     "h-4",
-                    rowIndex === 0 ? "w-24" : 
-                    rowIndex === 1 ? "w-32" : 
-                    rowIndex === 2 ? "w-36" :
-                    rowIndex === 3 ? "w-28" :
-                    rowIndex === 4 ? "w-30" : "w-26"
+                    rowIndex === 0 ? "w-24" :
+                      rowIndex === 1 ? "w-32" :
+                        rowIndex === 2 ? "w-36" :
+                          rowIndex === 3 ? "w-28" :
+                            rowIndex === 4 ? "w-30" : "w-26"
                   )} />
                 </td>
                 {/* Trader Name column - varied lengths */}
                 <td className="px-6 py-4">
                   <Skeleton className={cn(
                     "h-4",
-                    rowIndex === 0 ? "w-32" : 
-                    rowIndex === 1 ? "w-40" : 
-                    rowIndex === 2 ? "w-28" :
-                    rowIndex === 3 ? "w-36" :
-                    rowIndex === 4 ? "w-32" : "w-38"
+                    rowIndex === 0 ? "w-32" :
+                      rowIndex === 1 ? "w-40" :
+                        rowIndex === 2 ? "w-28" :
+                          rowIndex === 3 ? "w-36" :
+                            rowIndex === 4 ? "w-32" : "w-38"
                   )} />
                 </td>
                 {/* Trader Email column - longer values */}
                 <td className="px-6 py-4">
                   <Skeleton className={cn(
                     "h-4",
-                    rowIndex === 0 ? "w-48" : 
-                    rowIndex === 1 ? "w-44" : 
-                    rowIndex === 2 ? "w-52" :
-                    rowIndex === 3 ? "w-40" :
-                    rowIndex === 4 ? "w-46" : "w-42"
+                    rowIndex === 0 ? "w-48" :
+                      rowIndex === 1 ? "w-44" :
+                        rowIndex === 2 ? "w-52" :
+                          rowIndex === 3 ? "w-40" :
+                            rowIndex === 4 ? "w-46" : "w-42"
                   )} />
                 </td>
                 {/* Quantity column - numeric values */}
                 <td className="px-6 py-4">
                   <Skeleton className={cn(
                     "h-4",
-                    rowIndex === 0 ? "w-20" : 
-                    rowIndex === 1 ? "w-24" : 
-                    rowIndex === 2 ? "w-18" :
-                    rowIndex === 3 ? "w-22" :
-                    rowIndex === 4 ? "w-20" : "w-24"
+                    rowIndex === 0 ? "w-20" :
+                      rowIndex === 1 ? "w-24" :
+                        rowIndex === 2 ? "w-18" :
+                          rowIndex === 3 ? "w-22" :
+                            rowIndex === 4 ? "w-20" : "w-24"
                   )} />
                 </td>
                 {/* Price column - numeric values */}
                 <td className="px-6 py-4">
                   <Skeleton className={cn(
                     "h-4",
-                    rowIndex === 0 ? "w-24" : 
-                    rowIndex === 1 ? "w-20" : 
-                    rowIndex === 2 ? "w-28" :
-                    rowIndex === 3 ? "w-22" :
-                    rowIndex === 4 ? "w-26" : "w-24"
+                    rowIndex === 0 ? "w-24" :
+                      rowIndex === 1 ? "w-20" :
+                        rowIndex === 2 ? "w-28" :
+                          rowIndex === 3 ? "w-22" :
+                            rowIndex === 4 ? "w-26" : "w-24"
                   )} />
                 </td>
               </tr>

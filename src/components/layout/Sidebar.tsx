@@ -1,22 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
 import {
-  LayoutDashboard,
-  Users,
-  CreditCard,
-  Cpu,
-  ScrollText,
-  Bell,
-  Shield,
-  Settings,
-  LogOut,
   ChevronLeft,
   ChevronRight,
-  type LucideIcon,
+  Cpu,
+  CreditCard,
+  LayoutDashboard,
+  LogOut,
+  Users,
+  type LucideIcon
 } from "lucide-react";
-import { cn } from "../../lib/utils";
+import React from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { cn } from "../../lib/utils";
 import { Button } from "../ui/button";
 import {
   Tooltip,
@@ -130,7 +126,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onCollapse }) => {
     <aside
       className={cn(
         "fixed left-0 top-0 z-40 h-screen bg-white border-r border-slate-200 transition-all duration-300 ease-in-out flex flex-col",
-        collapsed ? "w-[72px]" : "w-[260px]"
+        collapsed ? "w-18" : "w-65"
       )}
     >
       {/* Logo */}

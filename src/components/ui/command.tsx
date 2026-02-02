@@ -1,7 +1,6 @@
-import * as React from "react"
 import { Command as CommandPrimitive } from "cmdk"
 import { Search } from "lucide-react"
-
+import * as React from "react"
 import { cn } from "../../lib/utils"
 import { Dialog, DialogContent } from "./dialog"
 
@@ -75,7 +74,7 @@ const CommandList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.List
     ref={ref}
-    className={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className)}
+    className={cn("max-h-75 overflow-y-auto overflow-x-hidden", className)}
     {...props} />
 ))
 
@@ -158,13 +157,7 @@ CommandShortcut.displayName = "CommandShortcut"
 
 export {
   Command,
-  CommandDialog,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-  CommandShortcut,
-  CommandSeparator,
+  CommandDialog, CommandEmpty,
+  CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut
 }
 

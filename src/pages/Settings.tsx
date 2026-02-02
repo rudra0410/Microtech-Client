@@ -1,19 +1,19 @@
 import {
-  Shield,
+  Bell,
   Clock,
   Database,
-  Bell,
+  ExternalLink,
   Globe,
+  Info,
   Lock,
   Server,
-  Info,
-  ExternalLink,
+  Shield,
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import { Switch } from '../components/ui/switch';
-import { Separator } from '../components/ui/separator';
 import StatusBadge from '../components/common/StatusBadge';
+import { Button } from '../components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Separator } from '../components/ui/separator';
+import { Switch } from '../components/ui/switch';
 
 const Settings = () => {
   return (

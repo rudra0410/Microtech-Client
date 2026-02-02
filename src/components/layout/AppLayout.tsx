@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import Header from './Header';
 import { cn } from '../../lib/utils';
+import Header from './Header';
 import Sidebar from './Sidebar';
 
 const AppLayout: React.FC = () => {
@@ -19,7 +19,7 @@ const AppLayout: React.FC = () => {
       <div
         className={cn(
           'transition-all duration-300 ease-in-out',
-          sidebarCollapsed ? 'ml-[72px]' : 'ml-[260px]'
+          sidebarCollapsed ? 'ml-18' : 'ml-65'
         )}
       >
         <Header />

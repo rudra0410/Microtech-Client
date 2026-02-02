@@ -1,70 +1,81 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { userService, CreateUserData, UpdateUserData, UserFilters } from '../../services/userService';
-import type { User } from '../../data/mock';
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { User } from "../../data/mock";
+import {
+  CreateUserData,
+  UpdateUserData,
+  UserFilters,
+  userService,
+} from "../../services/userService";
 
 // Async thunks
 export const fetchUsers = createAsyncThunk(
-  'users/fetchUsers',
+  "users/fetchUsers",
   async (filters?: UserFilters) => {
     const response = await userService.getUsers(filters);
     return response;
-  }
+  },
 );
 
 export const fetchUserById = createAsyncThunk(
-  'users/fetchUserById',
+  "users/fetchUserById",
   async (userId: string) => {
     const response = await userService.getUserById(userId);
     return response;
-  }
+  },
 );
 
 export const createUser = createAsyncThunk(
-  'users/createUser',
+  "users/createUser",
   async (userData: CreateUserData) => {
     const response = await userService.createUser(userData);
     return response;
-  }
+  },
 );
 
 export const updateUser = createAsyncThunk(
-  'users/updateUser',
-  async ({ userId, userData }: { userId: string; userData: UpdateUserData }) => {
+  "users/updateUser",
+  async ({
+    userId,
+    userData,
+  }: {
+    userId: string;
+    userData: UpdateUserData;
+  }) => {
     const response = await userService.updateUser(userId, userData);
     return response;
-  }
+  },
 );
 
 export const updateUserStatus = createAsyncThunk(
-  'users/updateUserStatus',
+  "users/updateUserStatus",
   async ({ userId, isActive }: { userId: string; isActive: boolean }) => {
     const response = await userService.updateUserStatus(userId, isActive);
     return response;
-  }
+  },
 );
 
 export const deleteUser = createAsyncThunk(
-  'users/deleteUser',
+  "users/deleteUser",
   async (userId: string) => {
     await userService.deleteUser(userId);
     return userId;
-  }
+  },
 );
 
 export const forceLogoutUser = createAsyncThunk(
-  'users/forceLogoutUser',
+  "users/forceLogoutUser",
   async (userId: string) => {
     await userService.forceLogoutUser(userId);
     return userId;
-  }
+  },
 );
 
 export const resetUserSubscription = createAsyncThunk(
-  'users/resetUserSubscription',
+  "users/resetUserSubscription",
   async (userId: string) => {
     const response = await userService.resetUserSubscription(userId);
     return response;
-  }
+  },
 );
 
 // State interface
@@ -89,7 +100,7 @@ const initialState: UserState = {
 
 // Slice
 const userSlice = createSlice({
-  name: 'users',
+  name: "users",
   initialState,
   reducers: {
     clearError: (state) => {
@@ -119,7 +130,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch users';
+        state.error = action.error.message || "Failed to fetch users";
       });
 
     // Fetch user by ID
@@ -134,7 +145,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to fetch user';
+        state.error = action.error.message || "Failed to fetch user";
       });
 
     // Create user
@@ -150,7 +161,7 @@ const userSlice = createSlice({
       })
       .addCase(createUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to create user';
+        state.error = action.error.message || "Failed to create user";
       });
 
     // Update user
@@ -161,7 +172,9 @@ const userSlice = createSlice({
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.users.findIndex(user => user.id === action.payload.id);
+        const index = state.users.findIndex(
+          (user) => user.id === action.payload.id,
+        );
         if (index !== -1) {
           state.users[index] = action.payload;
         }
@@ -171,7 +184,7 @@ const userSlice = createSlice({
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to update user';
+        state.error = action.error.message || "Failed to update user";
       });
 
     // Update user status
@@ -182,7 +195,9 @@ const userSlice = createSlice({
       })
       .addCase(updateUserStatus.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.users.findIndex(user => user.id === action.payload.id);
+        const index = state.users.findIndex(
+          (user) => user.id === action.payload.id,
+        );
         if (index !== -1) {
           state.users[index] = action.payload;
         }
@@ -192,7 +207,7 @@ const userSlice = createSlice({
       })
       .addCase(updateUserStatus.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to update user status';
+        state.error = action.error.message || "Failed to update user status";
       });
 
     // Delete user
@@ -203,7 +218,7 @@ const userSlice = createSlice({
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.users = state.users.filter(user => user.id !== action.payload);
+        state.users = state.users.filter((user) => user.id !== action.payload);
         state.totalCount -= 1;
         if (state.selectedUser?.id === action.payload) {
           state.selectedUser = null;
@@ -211,7 +226,7 @@ const userSlice = createSlice({
       })
       .addCase(deleteUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to delete user';
+        state.error = action.error.message || "Failed to delete user";
       });
 
     // Force logout user
@@ -225,7 +240,7 @@ const userSlice = createSlice({
       })
       .addCase(forceLogoutUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to force logout user';
+        state.error = action.error.message || "Failed to force logout user";
       });
 
     // Reset user subscription
@@ -236,7 +251,9 @@ const userSlice = createSlice({
       })
       .addCase(resetUserSubscription.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.users.findIndex(user => user.id === action.payload.id);
+        const index = state.users.findIndex(
+          (user) => user.id === action.payload.id,
+        );
         if (index !== -1) {
           state.users[index] = action.payload;
         }
@@ -246,10 +263,12 @@ const userSlice = createSlice({
       })
       .addCase(resetUserSubscription.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Failed to reset user subscription';
+        state.error =
+          action.error.message || "Failed to reset user subscription";
       });
   },
 });
 
-export const { clearError, setFilters, clearSelectedUser, setSelectedUser } = userSlice.actions;
+export const { clearError, setFilters, clearSelectedUser, setSelectedUser } =
+  userSlice.actions;
 export default userSlice.reducer;

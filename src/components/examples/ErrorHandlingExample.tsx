@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import { userService } from '../../services/userService';
+import { showErrorToast, showSuccessToast, validateFormData, validationRules } from '../../utils/errorHandler';
 import { Button } from '../ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { showErrorToast, showSuccessToast, validateFormData, validationRules } from '../../utils/errorHandler';
-import { userService } from '../../services/userService';
 
 /**
  * Example component demonstrating Firebase error handling with user-friendly toast messages
@@ -37,7 +37,7 @@ export const ErrorHandlingExample: React.FC = () => {
     try {
       const newUser = await userService.createUser(formData);
       showSuccessToast('User created successfully!', `${newUser.name} has been added to the system.`);
-      
+
       // Reset form
       setFormData({ name: '', email: '', mobile: '', password: '' });
     } catch (error) {
@@ -122,16 +122,16 @@ export const ErrorHandlingExample: React.FC = () => {
         </div>
 
         <div className="flex gap-2">
-          <Button 
-            onClick={handleCreateUser} 
+          <Button
+            onClick={handleCreateUser}
             disabled={isLoading}
             className="flex-1"
           >
             {isLoading ? 'Creating...' : 'Create User'}
           </Button>
-          
-          <Button 
-            onClick={simulateFirebaseErrors} 
+
+          <Button
+            onClick={simulateFirebaseErrors}
             variant="outline"
             className="flex-1"
           >

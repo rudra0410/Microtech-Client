@@ -1,20 +1,23 @@
-import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '../store';
+import { useCallback } from "react";
+import type {
+  Subscription,
+  SubscriptionWithUser,
+} from "../services/subscriptionService";
+import { useAppDispatch, useAppSelector } from "../store";
 import {
-  fetchAllSubscriptions,
-  fetchSubscriptionById,
   assignSubscription,
-  updateSubscription,
-  extendSubscription,
-  expireSubscription,
-  deleteSubscription,
-  fetchUserSubscriptions,
-  fetchUserActiveSubscription,
   clearError,
   clearSelectedSubscription,
+  deleteSubscription,
+  expireSubscription,
+  extendSubscription,
+  fetchAllSubscriptions,
+  fetchSubscriptionById,
+  fetchUserActiveSubscription,
+  fetchUserSubscriptions,
   setSelectedSubscription,
-} from '../store/slices/subscriptionSlice';
-import type { Subscription, SubscriptionWithUser } from '../services/subscriptionService';
+  updateSubscription,
+} from "../store/slices/subscriptionSlice";
 
 export const useSubscriptions = () => {
   const dispatch = useAppDispatch();
@@ -37,56 +40,56 @@ export const useSubscriptions = () => {
     (userId: string) => {
       dispatch(fetchSubscriptionById(userId));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const createSubscription = useCallback(
     (userId: string, startDate: string, endDate: string) => {
       return dispatch(assignSubscription({ userId, startDate, endDate }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const updateSubscriptionData = useCallback(
     (subscriptionId: string, updateData: Partial<Subscription>) => {
       return dispatch(updateSubscription({ subscriptionId, updateData }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const extendUserSubscription = useCallback(
     (userId: string, newEndDate: string) => {
       return dispatch(extendSubscription({ userId, newEndDate }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const expireUserSubscription = useCallback(
     (userId: string) => {
       return dispatch(expireSubscription(userId));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const removeSubscription = useCallback(
     (subscriptionId: string) => {
       return dispatch(deleteSubscription(subscriptionId));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const loadUserSubscriptions = useCallback(
     (userId: string) => {
       dispatch(fetchUserSubscriptions(userId));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const loadUserActiveSubscription = useCallback(
     (userId: string) => {
       dispatch(fetchUserActiveSubscription(userId));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const clearSubscriptionError = useCallback(() => {
@@ -101,7 +104,7 @@ export const useSubscriptions = () => {
     (subscription: SubscriptionWithUser) => {
       dispatch(setSelectedSubscription(subscription));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Helper functions
@@ -109,21 +112,21 @@ export const useSubscriptions = () => {
     (userId: string) => {
       return userSubscriptions[userId] || [];
     },
-    [userSubscriptions]
+    [userSubscriptions],
   );
 
   const getUserActiveSubscription = useCallback(
     (userId: string) => {
       return userActiveSubscriptions[userId] || null;
     },
-    [userActiveSubscriptions]
+    [userActiveSubscriptions],
   );
 
   const getSubscriptionsByStatus = useCallback(
-    (status: 'ACTIVE' | 'EXPIRED' | 'CANCELLED') => {
-      return subscriptions.filter(sub => sub.status === status);
+    (status: "ACTIVE" | "EXPIRED" | "CANCELLED") => {
+      return subscriptions.filter((sub) => sub.status === status);
     },
-    [subscriptions]
+    [subscriptions],
   );
 
   return {
@@ -135,7 +138,7 @@ export const useSubscriptions = () => {
     loading,
     error,
     totalCount,
-    
+
     // Actions
     loadAllSubscriptions,
     loadSubscriptionById,
@@ -149,7 +152,7 @@ export const useSubscriptions = () => {
     clearSubscriptionError,
     clearSelected,
     selectSubscription,
-    
+
     // Helpers
     getUserSubscriptions,
     getUserActiveSubscription,

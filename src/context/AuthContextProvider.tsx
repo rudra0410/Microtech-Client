@@ -1,19 +1,19 @@
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  type ReactNode,
-} from "react";
 import {
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
   User,
 } from "firebase/auth";
-import { auth } from "../lib/firebase";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import { rolePermissions, type Admin } from "../data/mock";
-import { AuthContext } from "./AuthContext";
+import { auth } from "../lib/firebase";
 import { adminService } from "../services/adminService";
+import { AuthContext } from "./AuthContext";
 
 interface AuthProviderProps {
   children: ReactNode;

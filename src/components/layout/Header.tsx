@@ -1,10 +1,13 @@
+import { Bell, ChevronRight } from "lucide-react";
 import React from "react";
-import { useLocation, Link } from "react-router-dom";
-import { ChevronRight, Bell } from "lucide-react";
-import { useAuth } from "../../hooks/useAuth";
+import { Link, useLocation } from "react-router-dom";
 import { useBreadcrumb } from "../../context/BreadcrumbContext";
-import { Button } from "../ui/button";
+import { useAuth } from "../../hooks/useAuth";
+import BreadcrumbSkeleton from "../common/BreadcrumbSkeleton";
+import StatusBadge from "../common/StatusBadge";
 import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,9 +16,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Badge } from "../ui/badge";
-import StatusBadge from "../common/StatusBadge";
-import BreadcrumbSkeleton from "../common/BreadcrumbSkeleton";
 import { Skeleton } from "../ui/skeleton";
 
 interface Breadcrumb {

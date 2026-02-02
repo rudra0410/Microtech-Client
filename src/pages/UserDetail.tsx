@@ -1,55 +1,41 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, useEffect, useCallback } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import { format, formatDistanceToNow } from "date-fns";
 import {
+  AlertTriangle,
   ArrowLeft,
-  Mail,
-  Phone,
+  Ban,
   Calendar,
+  CalendarDays,
+  CircleCheckBig,
   Clock,
-  CreditCard,
   Cpu,
-  Shield,
+  CreditCard,
+  Loader2,
+  Mail,
   MoreHorizontal,
   Pencil,
-  UserX,
-  UserCheck,
-  RotateCcw,
-  LogOut,
-  AlertTriangle,
-  Loader2,
+  Phone,
   Plus,
-  CalendarDays,
   RefreshCw,
-  CircleOff,
-  Ban,
-  CircleCheckBig,
+  RotateCcw,
+  Shield,
+  UserCheck,
+  UserX
 } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
+import DataTable from "../components/common/DataTable";
+import StatusBadge from "../components/common/StatusBadge";
+import { Avatar, AvatarFallback } from "../components/ui/avatar";
 import { Button } from "../components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "../components/ui/card";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "../components/ui/tabs";
-import { Avatar, AvatarFallback } from "../components/ui/avatar";
-import StatusBadge from "../components/common/StatusBadge";
-import DataTable from "../components/common/DataTable";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu";
 import {
   Dialog,
   DialogContent,
@@ -58,23 +44,35 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../components/ui/dropdown-menu";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Progress } from "../components/ui/progress";
-import { showErrorToast, showSuccessToast } from "../utils/errorHandler";
 import {
-  getSubscriptionStatusInfo,
-  getSubscriptionMessage,
-} from "../utils/subscriptionUtils";
-import { userService } from "../services/userService";
-import {
-  subscriptionService,
-  Subscription,
-} from "../services/subscriptionService";
-import { useCustomPageTitle } from "../hooks/usePageTitle";
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
 import { useBreadcrumb } from "../context/BreadcrumbContext";
 import type { User } from "../data/mock";
-import { toast } from "sonner";
+import { useCustomPageTitle } from "../hooks/usePageTitle";
+import {
+  Subscription,
+  subscriptionService,
+} from "../services/subscriptionService";
+import { userService } from "../services/userService";
+import { showErrorToast, showSuccessToast } from "../utils/errorHandler";
+import {
+  getSubscriptionMessage,
+  getSubscriptionStatusInfo,
+} from "../utils/subscriptionUtils";
 
 const UserDetail = () => {
   const { id } = useParams();

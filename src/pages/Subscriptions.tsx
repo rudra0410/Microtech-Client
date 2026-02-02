@@ -1,26 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import {
+  Calendar,
+  Loader2,
   MoreHorizontal,
   Pencil,
-  X,
-  Loader2,
-  Calendar,
-  Users,
   RefreshCw,
+  Users,
+  X,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import DataTable from "../components/common/DataTable";
+import TableSkeleton from "../components/common/LoadingState";
 import StatusBadge from "../components/common/StatusBadge";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
-import { Skeleton } from "../components/ui/skeleton";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../components/ui/dropdown-menu";
 import {
   Dialog,
   DialogContent,
@@ -29,15 +24,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../components/ui/dropdown-menu";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
-import { toast } from "sonner";
+import { Skeleton } from "../components/ui/skeleton";
+import { useSubscriptions } from "../hooks";
 import {
   subscriptionService,
   SubscriptionWithUser,
 } from "../services/subscriptionService";
-import { useSubscriptions } from "../hooks";
-import TableSkeleton from "../components/common/LoadingState";
 
 const StatCardSkeleton = () => (
   <Card>

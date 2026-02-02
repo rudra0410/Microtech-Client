@@ -1,20 +1,22 @@
-import { useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
 import { Cpu, Eye, EyeOff, Loader2 } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
+import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { Alert, AlertDescription } from '../components/ui/alert';
 import { Button } from '../components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Alert, AlertDescription } from '../components/ui/alert';
+import { useAuth } from '../hooks/useAuth';
 
 const Login = () => {
   const navigate = useNavigate();
   const { login, isLoading, error, isAuthenticated } = useAuth();
-  const [email, setEmail] = useState('admin123456@gmail.com');
-  const [password, setPassword] = useState('admin@1234');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [localError, setLocalError] = useState('');
+
+  const currentYear = new Date().getFullYear()
 
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
@@ -47,7 +49,7 @@ const Login = () => {
             <Cpu className="w-7 h-7 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">IoT Admin</h1>
+            <h1 className="text-2xl font-bold text-slate-900">Microtech Admin</h1>
             <p className="text-sm text-slate-500">Device Controller System</p>
           </div>
         </div>
@@ -113,7 +115,7 @@ const Login = () => {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-11 bg-blue-600 hover:bg-blue-700"
+                className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white"
               >
                 {isLoading ? (
                   <>
@@ -126,16 +128,16 @@ const Login = () => {
               </Button>
             </form>
 
-            <div className="mt-6 p-4 bg-slate-50 rounded-lg">
+            {/* <div className="mt-6 p-4 bg-slate-50 rounded-lg">
               <p className="text-xs text-slate-500 mb-2 font-medium">Demo Credentials:</p>
               <p className="text-xs text-slate-600">Email: admin123456@gmail.com</p>
               <p className="text-xs text-slate-600">Password: admin@1234</p>
-            </div>
+            </div> */}
           </CardContent>
         </Card>
 
         <p className="text-center text-sm text-slate-500 mt-6">
-          © 2025 IoT Admin Panel. All rights reserved.
+          © {currentYear} Microtech Admin Panel. All rights reserved.
         </p>
       </div>
     </div>

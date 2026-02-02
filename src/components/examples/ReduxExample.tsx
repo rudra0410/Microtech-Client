@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect } from 'react';
-import { useUsers, useDashboard, useSubscriptions } from '../../hooks';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
 import { Loader2, RefreshCw } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { useDashboard, useSubscriptions, useUsers } from '../../hooks';
+import { Button } from '../ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 
 /**
  * Example component demonstrating how to use Redux Toolkit with custom hooks
@@ -249,11 +249,11 @@ export const ReduxExample: React.FC = () => {
               {`import { useUsers, useDashboard, useSubscriptions } from '../hooks';`}
             </code>
           </div>
-          
+
           <div>
             <h4 className="font-semibold mb-2">2. Use in your component:</h4>
             <code className="block bg-gray-100 p-2 rounded text-sm whitespace-pre">
-{`const { 
+              {`const { 
   users, 
   loading, 
   error, 
@@ -273,7 +273,7 @@ export const ReduxExample: React.FC = () => {
           <div>
             <h4 className="font-semibold mb-2">4. Handle loading and errors:</h4>
             <code className="block bg-gray-100 p-2 rounded text-sm whitespace-pre">
-{`if (loading) return <LoadingSpinner />;
+              {`if (loading) return <LoadingSpinner />;
 if (error) return <ErrorMessage error={error} />;
 return <YourComponent data={users} />;`}
             </code>

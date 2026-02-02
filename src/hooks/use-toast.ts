@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 // Inspired by react-hot-toast library
-import * as React from "react"
+import * as React from "react";
 
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 1000000
@@ -187,5 +187,5 @@ function useToast(): UseToastReturn {
   };
 }
 
-export { useToast, toast }
-export type { Toast, ToastProps, ToastActionElement }
+export { toast, useToast };
+export type { Toast, ToastActionElement, ToastProps };

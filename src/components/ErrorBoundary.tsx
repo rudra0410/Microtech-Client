@@ -1,7 +1,7 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Component, ErrorInfo, ReactNode } from 'react';
 import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 interface Props {
   children: ReactNode;
@@ -53,7 +53,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <p className="text-slate-600">
               An error occurred while rendering this component. This might be a temporary issue.
             </p>
-            
+
             {import.meta.env.NODE_ENV === 'development' && this.state.error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                 <h4 className="font-medium text-red-800 mb-2">Error Details:</h4>
@@ -72,7 +72,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 )}
               </div>
             )}
-            
+
             <div className="flex gap-2">
               <Button onClick={this.handleReset} variant="outline">
                 Try Again

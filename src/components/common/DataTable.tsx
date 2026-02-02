@@ -1,17 +1,18 @@
-import { useState, useMemo, ReactNode } from 'react';
 import {
-  ChevronUp,
   ChevronDown,
-  ChevronsUpDown,
   ChevronLeft,
   ChevronRight,
-  Search,
+  ChevronsUpDown,
+  ChevronUp,
   Filter,
+  Search,
   X,
 } from 'lucide-react';
+import { ReactNode, useMemo, useState } from 'react';
+import { cn } from '../../lib/utils';
 import { Button } from '../ui/button';
-import { Input } from '../ui/input';
 import { Checkbox } from '../ui/checkbox';
+import { Input } from '../ui/input';
 import {
   Select,
   SelectContent,
@@ -19,7 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import { cn } from '../../lib/utils';
 import EmptyState from './EmptyState';
 import { TableSkeleton } from './LoadingState';
 
@@ -207,7 +207,7 @@ const DataTable = <T extends { id: string }>({
       {(searchable || filters) && (
         <div className="p-4 border-b border-slate-200 flex flex-wrap items-center gap-3">
           {searchable && (
-            <div className="relative flex-1 min-w-[200px] max-w-md">
+            <div className="relative flex-1 min-w-50 max-w-md">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <Input
                 value={searchQuery}
@@ -237,7 +237,7 @@ const DataTable = <T extends { id: string }>({
                 setCurrentPage(1);
               }}
             >
-              <SelectTrigger className="w-[160px] h-9">
+              <SelectTrigger className="w-40 h-9">
                 <Filter className="w-4 h-4 mr-2 text-slate-400" />
                 <SelectValue placeholder={filter.label} />
               </SelectTrigger>
